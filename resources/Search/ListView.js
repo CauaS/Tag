@@ -15,10 +15,8 @@ class ListViewTag extends Component {
         }
     }
     _renderTag(lista){
-        console.log(lista);
 
         return lista.map((item) => {
-            console.log(item)
             return(
                 <View key={item}>
                     <Text style={styles.textTag}>#{item}</Text>

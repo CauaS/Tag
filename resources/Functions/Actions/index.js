@@ -34,3 +34,11 @@ export const alteraTag = (tag) => {
         payload: tag
     }
 }
+
+export const deletaTag = (tagIndex) => {
+
+    return {
+        type: 'DELETA_TAG',
+        payload: tagIndex
+    }
+}

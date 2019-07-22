@@ -1,27 +1,42 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Text, View, Button } from 'react-native'
+import { TouchableOpacity, Text, View, Button, StyleSheet } from 'react-native'
 
 import { connect } from 'react-redux';
 
-import { salvaDados } from '../../Functions/Actions/index';
+import { salvaDados, deletaTag } from '../../Functions/Actions/index';
 
+import { AntDesign } from '@expo/vector-icons';
 
 class Tag extends Component{
 
-    buscarDados(){
+    _excluirTag(tagItem){
+
+        for(var i=0; i<=this.props.tag.length; i++){
+            if(this.props.tag[i] == tagItem){
+                this.props.tag.splice(i, 1);                
+            }            
+        }
+         this.props.deletaTag(this.props.tag);
+    }
+
+    _buscarDados(){
         const { tag, pedido, descricao } = this.props;
 
         this.props.salvaDados({ tag, pedido, descricao });
     }
 
-    createTag(){ 
-        return this.props.tag.map(item => {
+    createTag(){
+        console.log('this.props.tag = > ', this.props.tag);
+
+        return  this.props.tag.map(item => {            
             return(
                 <TouchableOpacity
-                    onPress={() => console.log({item})}
-                    style={{ backgroundColor: '#87CEFA', borderRadius: 50, padding:5, margin:5 }}
+                    key={item}
+                    onPress={() => this._excluirTag(item)}
+                    style={ styles.tag}
                 >
-                        <Text>#{item}</Text>
+                    <AntDesign name="closecircle" size={16} color="black" style={styles.iconClose} />
+                    <Text>{item}</Text>
                 </TouchableOpacity>
             );
         })  
@@ -30,20 +45,41 @@ class Tag extends Component{
     render(){
         return(
             <View>
-                <Text style={{ margin: 5, fontWeight: 'bold' }}># tags:</Text>
+                <Text style={styles.texTag}># tags:</Text>
                 <View style={{ flexDirection: 'row',flexWrap: 'wrap' }}>
                     {this.createTag()}
                 </View>
-                <View><Button title='press' onPress={() => this.buscarDados()}/></View>                
+                <View>
+                    <Button title='press' onPress={() => this._buscarDados()}/>
+                </View>                
             </View>
         );
     }
 }
 
 const mapStateToProps = state => {
-    return ({ });
+    return (
+        { }
+    );
   }
 
+  const styles = StyleSheet.create({
+      tag: {
+        backgroundColor: '#87CEFA', 
+        borderRadius: 50, 
+        paddingHorizontal: 8,
+        paddingVertical: 5, 
+        margin:5,
+        flexDirection: 'row'
+      },
+      texTag:{
+        margin: 5, 
+        fontWeight: 'bold'
+      },
+      iconClose: {
+        paddingRight: 5  
+      }
+  })
 export default connect(
-    mapStateToProps, { salvaDados }
+    mapStateToProps, { salvaDados, deletaTag }
 )(Tag);

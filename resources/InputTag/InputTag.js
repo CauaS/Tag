@@ -45,6 +45,8 @@ class InputTag extends Component {
 }
 
 const mapStateToProps = state => {
+    console.log(state);
+
     return ({ tag: state.firebase.tag });
   }
 
