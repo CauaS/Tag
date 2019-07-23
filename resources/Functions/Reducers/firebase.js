@@ -15,8 +15,10 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, descricao:action.payload }
        case 'ALTERA_TAG':
             return { ...state, tag: [...state.tag, action.payload] }
-     case 'DELETA_TAG':
-          return {...state, tag: action.payload }
+       case 'SUCESSO_INSERCAO':
+          return { ...state, pedido: '', descricao: '', tag: [] }
+       case 'DELETA_TAG':
+          return {...state, tag: [...state.tag] }
        default: 
             return state;
    }

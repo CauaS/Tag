@@ -24,8 +24,16 @@ export const salvaDados = ({ pedido, descricao, ...tag }) => {
                 descricao: descricao,
                 pedido: pedido,
                 tag: tag.tag
-            })
+            }).then(value => sucessoInsercao(dispatch, value))
     }
+}
+
+export const sucessoInsercao = (dispatch, value) => {
+    dispatch(
+        { type: 'SUCESSO_INSERCAO', 
+            payload: value
+        }
+    )
 }
 
 export const alteraTag = (tag) => {
@@ -35,10 +43,9 @@ export const alteraTag = (tag) => {
     }
 }
 
-export const deletaTag = (tagIndex) => {
+export const deletaTag = () => {
 
     return {
-        type: 'DELETA_TAG',
-        payload: tagIndex
+        type: 'DELETA_TAG'
     }
 }

@@ -26,7 +26,7 @@ class InputTag extends Component {
     }
 
     render(){ 
-        const { pedido, descricao } = this.props;
+        const { pedido, descricao, tag } = this.props;
 
         return(
             <View>
@@ -38,16 +38,18 @@ class InputTag extends Component {
                     style={ styles.inputTag }
                     onSubmitEditing={() => this.keyboardDidHide()}
                 />
-                <Tag tag={this.props.tag} pedido={pedido} descricao={descricao} />
+                <Tag tag={tag} pedido={pedido} descricao={descricao} />
             </View>
         );
     }
 }
 
 const mapStateToProps = state => {
-    console.log(state);
-
-    return ({ tag: state.firebase.tag });
+    return (
+        { 
+            tag: state.firebase.tag 
+        }
+    );
   }
 
 export default connect(

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Text, View, Button, StyleSheet } from 'react-native'
+import { TouchableOpacity, Text, View, StyleSheet, Alert } from 'react-native'
 
 import { connect } from 'react-redux';
 
@@ -10,30 +10,33 @@ import { AntDesign } from '@expo/vector-icons';
 class Tag extends Component{
 
     _excluirTag(tagItem){
-
+        
         for(var i=0; i<=this.props.tag.length; i++){
             if(this.props.tag[i] == tagItem){
                 this.props.tag.splice(i, 1);                
             }            
         }
-         this.props.deletaTag(this.props.tag);
+        
+         this.props.deletaTag();
     }
 
-    _buscarDados(){
+    _salvarDados(){
         const { tag, pedido, descricao } = this.props;
 
-        this.props.salvaDados({ tag, pedido, descricao });
+        if(( pedido | descricao) == '') {
+            Alert.alert('Erro', 'Campos pedido ou decrição estão em brancos.');
+        }else {
+            this.props.salvaDados({ tag, pedido, descricao });
+        }        
     }
 
     createTag(){
-        console.log('this.props.tag = > ', this.props.tag);
-
         return  this.props.tag.map(item => {            
             return(
                 <TouchableOpacity
                     key={item}
                     onPress={() => this._excluirTag(item)}
-                    style={ styles.tag}
+                    style={styles.tag}
                 >
                     <AntDesign name="closecircle" size={16} color="black" style={styles.iconClose} />
                     <Text>{item}</Text>
@@ -44,14 +47,16 @@ class Tag extends Component{
 
     render(){
         return(
-            <View>
+            <View sytle={{ flex: 1}}>                
                 <Text style={styles.texTag}># tags:</Text>
                 <View style={{ flexDirection: 'row',flexWrap: 'wrap' }}>
                     {this.createTag()}
                 </View>
-                <View>
-                    <Button title='press' onPress={() => this._buscarDados()}/>
-                </View>                
+                <TouchableOpacity 
+                    onPress={() => this._salvarDados()} 
+                        style={styles.buttonSave}>            
+                    <Text style={styles.textButtonSave}>Salvar</Text>             
+                </TouchableOpacity>
             </View>
         );
     }
@@ -78,6 +83,20 @@ const mapStateToProps = state => {
       },
       iconClose: {
         paddingRight: 5  
+      },
+      buttonSave: {
+        height: 40, 
+        width: '100%',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center', 
+        backgroundColor: '#337DFF',
+        elevation: 5 
+      },
+      textButtonSave: {
+          fontSize: 20,
+          fontWeight: 'bold',
+          color: 'white'
       }
   })
 export default connect(
