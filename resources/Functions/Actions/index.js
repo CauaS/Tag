@@ -7,14 +7,21 @@ export const alteraPedido = (pedido) => {
         payload: pedido
     }
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const alteraDescricao = (descricao) => {
     return {
         type: 'ALTERA_DESCRICAO',
         payload: descricao
     }
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export const alteraTag = (tag) => {
+    return {
+        type: 'ALTERA_TAG',
+        payload: tag
+    }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const salvaDados = ({ pedido, descricao, ...tag }) => {
 
     return dispatch => {
@@ -35,17 +42,39 @@ export const sucessoInsercao = (dispatch, value) => {
         }
     )
 }
-
-export const alteraTag = (tag) => {
-    return {
-        type: 'ALTERA_TAG',
-        payload: tag
-    }
-}
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const deletaTag = () => {
 
     return {
         type: 'DELETA_TAG'
     }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export const buscaPedido = (pedido) => {
+    return dispatch => {
+        firebase.database()
+            .ref(`/Dados/${pedido}`)
+            .once('value', snapshot => {
+                dispatch({
+                    type:'BUSCA_PEDIDO',
+                    payload: snapshot.val()
+                })
+            })
+            .then(value => sucessoBuscaPedido(dispatch,value))
+            .catch(error => erroBuscaPedido(dispatch, error))
+    }
+}
+
+export const sucessoBuscaPedido = (dispatch,value) => {
+    dispatch({
+        type: 'SUCESSO_BUSCA_PEDIDO',
+        payload: value
+    })
+}
+
+export const erroBuscaPedido = (dispatch, error) => {
+    dispatch({
+        type: 'ERRO_BUSCA_PEDIDO',
+        payload: error
+    })
 }

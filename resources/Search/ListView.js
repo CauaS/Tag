@@ -8,14 +8,11 @@ class ListViewTag extends Component {
 
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2 });
 
-        const lista = [{tag:['', ''], pedido: '', descricao: ''}];
-
         this.state = {
-            dataSource: ds.cloneWithRows(lista)
-        }
+            dataSource: ds.cloneWithRows(this.props.pedido)
+        }        
     }
     _renderTag(lista){
-
         return lista.map((item) => {
             return(
                 <View key={item}>
@@ -26,22 +23,15 @@ class ListViewTag extends Component {
         })
         
     }  
-    _renderRow(rowData) {
-           if(rowData.pedido != ''){
-                return (
-                    <View style={styles.viewConteudo}>
-                        <Text style={styles.textPedido}>{rowData.pedido}</Text>
-                        <Text style={styles.textDecricao}>{rowData.descricao}</Text>
-                        <View style={styles.viewTag}>{this._renderTag(rowData.tag)}</View>
-                    </View>
-                );
-           }  
-           return (
-            <View>
-                <Text> Sem resultados...</Text>
+    _renderRow(rowData) {         
+        return (
+            <View style={styles.viewConteudo}>
+                <Text style={styles.textPedido}>{rowData.pedido}</Text>
+                <Text style={styles.textDecricao}>{rowData.descricao}</Text>
+                <View style={styles.viewTag}>{this._renderTag(rowData.tag)}</View>
             </View>
         );
-        }
+    }
 
     render(){
         const { dataSource } = this.state;
@@ -51,6 +41,7 @@ class ListViewTag extends Component {
                 <ListView 
                     dataSource={dataSource}
                     renderRow={(rowData) => this._renderRow(rowData)}
+                    enableEmptySections
                 />
             </View>
         );
@@ -63,8 +54,9 @@ const styles = StyleSheet.create({
         width: 348,     
         backgroundColor: 'white' , 
         borderRadius: 10 ,
-        marginTop: 5, 
+        marginTop: 3, 
         elevation: 2,
+        paddingBottom: 5,
         flexWrap: 'wrap'
     },
     textPedido:{
@@ -80,7 +72,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#87CEFA', 
         borderRadius: 60, 
         padding:5, 
-        margin:5,
+        margin:2,
         fontSize: 15
     },
     viewTag: {

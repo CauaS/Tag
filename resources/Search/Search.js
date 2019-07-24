@@ -1,7 +1,11 @@
 import React,  { Component } from 'react';
-import { View, StyleSheet, TextInput} from 'react-native';
-import { Ionicons,  FontAwesome } from '@expo/vector-icons';
+import { View, StyleSheet, TextInput, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import ListViewTag from './ListView';
+
+import { connect } from 'react-redux';
+
+import { buscaPedido } from '../Functions/Actions/index';
 
 class Search extends Component {
     constructor(props){
@@ -10,6 +14,9 @@ class Search extends Component {
         this.state={
             busca: ''
         }
+    }
+    _buscarPedido(pedido){
+        this.props.buscaPedido(pedido);
     }
 
     render(){
@@ -27,18 +34,36 @@ class Search extends Component {
                             <Ionicons 
                                 name="ios-search" 
                                 size={32} 
-                                color="black" 
+                                color="black"
+                                onPress={() => this._buscarPedido(this.state.busca)} 
                             />
                         </View>                       
                     </View>
-                    <ListViewTag />
+                    { this.props.sucessoBuscaPedido ? (
+                        <ListViewTag pedido={this.props.BuscaPedido}/>
+                    ): (
+                        <View><Text>Sem resultados...</Text></View>
+                    )}
                 </View>
             </View>
         )
     }
 }
 
-export default Search;
+const mapStateToProps = state => {
+    return (
+        { 
+            BuscaPedido: state.firebase.buscaPedido,
+            sucessoBuscaPedido: state.firebase.sucessoBuscaPedido 
+        }
+    )
+}
+
+export default connect(
+    mapStateToProps, { buscaPedido }
+ )(Search);
+
+
 
 const styles = StyleSheet.create({
     viewSerch: { 
