@@ -5,7 +5,8 @@ const INITIAL_STATE = {
     tag:[],
     buscaPedido: [],
     erroBuscaPedido: '',
-    sucessoBuscaPedido: false
+    sucessoBuscaPedido: false,
+    todosPedidos: false
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -23,7 +24,9 @@ export default (state = INITIAL_STATE, action) => {
        case 'DELETA_TAG':
           return {...state, tag: [...state.tag] }
        case 'BUSCA_PEDIDO':
-          return {...state, buscaPedido:[action.payload]}
+          return {...state, buscaPedido:[action.payload], todosPedidos:false}
+       case 'BUSCA_TODOS_PEDIDOS':
+         return {...state, buscaPedido:[action.payload], todosPedidos:true}
        case 'SUCESSO_BUSCA_PEDIDO':
           return {...state, sucessoBuscaPedido:true }
        case 'ERRO_BUSCA_PEDIDO':

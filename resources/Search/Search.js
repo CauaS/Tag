@@ -20,6 +20,8 @@ class Search extends Component {
     }
 
     render(){
+        const { todosPedidos, BuscaPedido, sucessoBuscaPedido} = this.props;
+
         return(
             <View>
                 <View style={{ justifyContent: 'center', alignItems: 'center', }}>
@@ -39,8 +41,8 @@ class Search extends Component {
                             />
                         </View>                       
                     </View>
-                    { this.props.sucessoBuscaPedido ? (
-                        <ListViewTag pedido={this.props.BuscaPedido}/>
+                    { sucessoBuscaPedido ? (
+                        <ListViewTag pedido={BuscaPedido} todosPedidos={todosPedidos}/>
                     ): (
                         <View><Text>Sem resultados...</Text></View>
                     )}
@@ -54,7 +56,8 @@ const mapStateToProps = state => {
     return (
         { 
             BuscaPedido: state.firebase.buscaPedido,
-            sucessoBuscaPedido: state.firebase.sucessoBuscaPedido 
+            sucessoBuscaPedido: state.firebase.sucessoBuscaPedido,
+            todosPedidos: state.firebase.todosPedidos
         }
     )
 }

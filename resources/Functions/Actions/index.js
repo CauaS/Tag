@@ -51,21 +51,37 @@ export const deletaTag = () => {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const buscaPedido = (pedido) => {
-    return dispatch => {
-        firebase.database()
-            .ref(`/Dados/${pedido}`)
-            .once('value', snapshot => {
-                dispatch({
-                    type:'BUSCA_PEDIDO',
-                    payload: snapshot.val()
+
+    if(pedido == ''){        
+        return dispatch => {
+            firebase.database()
+                .ref(`/Dados/`)
+                .once('value', snapshot => {
+                    dispatch({
+                        type:'BUSCA_TODOS_PEDIDOS',
+                        payload: snapshot.val()
+                    })                   
                 })
-            })
-            .then(value => sucessoBuscaPedido(dispatch,value))
-            .catch(error => erroBuscaPedido(dispatch, error))
+                .then(value => sucessoBuscaPedido(dispatch,value))
+                .catch(error => erroBuscaPedido(dispatch, error))
+        }
+    } else {
+        return dispatch => {
+            firebase.database()
+                .ref(`/Dados/${pedido}`)
+                .once('value', snapshot => {
+                    dispatch({
+                        type:'BUSCA_PEDIDO',
+                        payload: snapshot.val()
+                    })
+                })
+                .then(value => sucessoBuscaPedido(dispatch,value))
+                .catch(error => erroBuscaPedido(dispatch, error))
+        }
     }
 }
 
-export const sucessoBuscaPedido = (dispatch,value) => {
+export const sucessoBuscaPedido = (dispatch, value) => {
     dispatch({
         type: 'SUCESSO_BUSCA_PEDIDO',
         payload: value
