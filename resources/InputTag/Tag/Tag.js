@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Text, View, StyleSheet, Alert } from 'react-native'
+import { TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 
 import { connect } from 'react-redux';
 
-import { salvaDados, deletaTag } from '../../Functions/Actions/index';
+import { deletaTag } from '../../Functions/Actions/index';
 
 import { AntDesign } from '@expo/vector-icons';
 
@@ -18,16 +18,6 @@ class Tag extends Component{
         }
         
          this.props.deletaTag();
-    }
-
-    _salvarDados(){
-        const { tag, pedido, descricao } = this.props;
-
-        if(( pedido | descricao) == '') {
-            Alert.alert('Erro', 'Campos pedido ou decrição estão em brancos.');
-        }else {
-            this.props.salvaDados({ tag, pedido, descricao });
-        }        
     }
 
     createTag(){
@@ -52,11 +42,6 @@ class Tag extends Component{
                 <View style={{ flexDirection: 'row',flexWrap: 'wrap' }}>
                     {this.createTag()}
                 </View>
-                <TouchableOpacity 
-                    onPress={() => this._salvarDados()} 
-                        style={styles.buttonSave}>            
-                    <Text style={styles.textButtonSave}>Salvar</Text>             
-                </TouchableOpacity>
             </View>
         );
     }
@@ -83,22 +68,8 @@ const mapStateToProps = state => {
       },
       iconClose: {
         paddingRight: 5  
-      },
-      buttonSave: {
-        height: 40, 
-        width: '100%',
-        borderRadius: 50,
-        justifyContent: 'center',
-        alignItems: 'center', 
-        backgroundColor: '#337DFF',
-        elevation: 5 
-      },
-      textButtonSave: {
-          fontSize: 20,
-          fontWeight: 'bold',
-          color: 'white'
       }
   })
 export default connect(
-    mapStateToProps, { salvaDados, deletaTag }
+    mapStateToProps, { deletaTag }
 )(Tag);

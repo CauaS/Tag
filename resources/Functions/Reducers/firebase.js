@@ -4,9 +4,15 @@ const INITIAL_STATE = {
     descricao: '',
     tag:[],
     buscaPedido: [],
-    erroBuscaPedido: '',
+    erroBuscaPedido: false,
     sucessoBuscaPedido: false,
-    todosPedidos: false
+    todosPedidos: false,
+    stateTag: false,
+    buscaTags: [],
+    pesquisaTagPedido: '',
+    tipoPesquisaTag: false,
+    nro_registro: 0,
+    indicator: false
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -24,13 +30,25 @@ export default (state = INITIAL_STATE, action) => {
        case 'DELETA_TAG':
           return {...state, tag: [...state.tag] }
        case 'BUSCA_PEDIDO':
-          return {...state, buscaPedido:[action.payload], todosPedidos:false}
+          return {...state, buscaPedido:[action.payload], todosPedidos:false, erroBuscaPedido: false }
        case 'BUSCA_TODOS_PEDIDOS':
-         return {...state, buscaPedido:[action.payload], todosPedidos:true}
+         return {...state, buscaPedido:[action.payload], todosPedidos:true, erroBuscaPedido: false, buscaTags:[] }
        case 'SUCESSO_BUSCA_PEDIDO':
-          return {...state, sucessoBuscaPedido:true }
+          return {...state, buscaTags:[], nro_registro: action.countReg, indicator: false }
        case 'ERRO_BUSCA_PEDIDO':
-          return {...state, erroBuscaPedido:action.payload }
+          return {...state, erroBuscaPedido:action.payload, buscaTags:[] }
+       case 'ALTERA_STATE_TAG':          
+          return {...state, stateTag: !state.stateTag, buscaPedido: [],buscaTags:[], todosPedidos:false, nro_registro: 0 }
+       case 'BUSCA_TAGS':
+          return {...state, buscaTags:[...state.buscaTags, action.payload], todosPedidos: false }
+       case 'PESQUISA_TAG_PEDIDO':
+            return {...state, buscaTags:[], buscaPedido: [], nro_registro: 0 }
+       case 'SUCESSO_BUSCA_TAGS':
+            return {...state, nro_registro:action.countReg, erroBuscaPedido:false, indicator: false }
+       case 'ALTERA_STATE_TIPO_PEQUISA_TAG':
+            return {...state,  tipoPesquisaTag: !state.tipoPesquisaTag, buscaTags:[], nro_registro: 0 }  
+       case 'ALTERA_STATE_INDICATOR':
+            return {...state,  indicator: !state.indicator }  
        default: 
             return state;
    }

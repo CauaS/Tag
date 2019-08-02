@@ -5,6 +5,7 @@ import { Ionicons,  FontAwesome } from '@expo/vector-icons';
 
 import DescriptionPed from '../Description/Description';
 import Search from '../Search/Search';
+import PedidoCompleto from '../Search/PedidoCompleto';
 
 const SEARCH = () => { return(<Ionicons name="ios-search" size={32} color="black" />)}
 const DESCRIPTION = () => { return(<FontAwesome name="pencil" size={32} color="black" />)}
@@ -13,11 +14,12 @@ const DESCRIPTION = () => { return(<FontAwesome name="pencil" size={32} color="b
 export default props = () => {
     return(
         <Router>
-            <Stack key='root'>                
+            <Stack key='root'>                              
                 <Scene 
                     key='tabbar'
                     title=''
-                    tabs                     
+                    tabs
+                    hideNavBar                     
                     tabBarStyle={{ backgroundColor:'#FFFFFF' }}
                 >
                     <Scene 
@@ -41,10 +43,14 @@ export default props = () => {
                         <Scene
                             key='Search'
                             component={Search}
-                            hideNavBar                            
+                            hideNavBar                                                       
                         />
                     </Scene>           
                 </Scene>
+                <Scene 
+                    key='PedidoCompleto'
+                    component={PedidoCompleto}
+                /> 
             </Stack>
         </Router>
     );

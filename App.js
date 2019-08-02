@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, YellowBox  } from 'react-native';
 import firebase from'firebase';
 //import DescriptionPed from './resources/Description/Description';
 import Router from './resources/Tab/Router';
@@ -27,6 +27,10 @@ export default class App extends Component {
   }
 
   render() {
+
+    YellowBox.ignoreWarnings(['Warning: Each', 'Warning: Failed']);
+    console.disableYellowBox = true;
+
     return (
       <View style={{ flex: 1 }}>
          <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>

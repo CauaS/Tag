@@ -1,6 +1,6 @@
 import React,  { Component } from 'react';
-import { View, ListView, Text, StyleSheet } from 'react-native';
-//import console = require('console');
+import { View, ListView, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 class ListViewTag extends Component {
 
@@ -10,17 +10,18 @@ class ListViewTag extends Component {
     }
 
     componentWillMount(){
-        this._criaFonteDados(this.props.pedido);
+        this.props.stateTag ? this._criaFonteDados(this.props.pedidosTags) : this._criaFonteDados(this.props.pedido);
     }
 
     componentWillReceiveProps(nextProps){
-        this._criaFonteDados(nextProps.pedido);
+        this.props.stateTag ? this._criaFonteDados(nextProps.pedidosTags) : this._criaFonteDados(nextProps.pedido);
     }
 
     _criaFonteDados(fonte) {
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2 });
-        
+
         this.dataSource = ds.cloneWithRows(fonte);
+        
     }
 
     _renderTag(lista){
@@ -39,28 +40,47 @@ class ListViewTag extends Component {
         if(this.props.todosPedidos == true){
           return todosPedidos.map((item) => {
               return (
-                <View style={styles.viewConteudo}>
-                    <Text style={styles.textPedido}>{item.pedido}</Text>
-                    <Text style={styles.textDecricao}>{item.descricao}</Text>
+                <TouchableOpacity 
+                    style={styles.viewConteudo}
+                    onPress={() => Actions.PedidoCompleto({
+                                        title:item.pedido,
+                                        pedido: item.pedido,
+                                        descricao: item.descricao,
+                                        tags: item.tag  
+                                   })} 
+                >    
+                    <View style={styles.viewNroPedido}>
+                        <Text style={styles.textPedido}>{item.pedido}</Text>
+                    </View>
+                    <Text numberOfLines={3} style={styles.textDecricao}>{item.descricao}</Text>
                     <View style={styles.viewTag}>{this._renderTag(item.tag)}</View>
-                </View>
+                </TouchableOpacity>
             ); 
         });
        } else {
             return (
-                <View style={styles.viewConteudo}>
-                    <Text style={styles.textPedido}>{rowData.pedido}</Text>
-                    <Text style={styles.textDecricao}>{rowData.descricao}</Text>
+                <TouchableOpacity 
+                    style={styles.viewConteudo} 
+                    onPress={() => Actions.PedidoCompleto({
+                                        title:rowData.pedido,
+                                        pedido: rowData.pedido,
+                                        descricao: rowData.descricao,
+                                        tags: rowData.tag
+                                    })}
+                    >
+                     <View style={styles.viewNroPedido}>
+                        <Text style={styles.textPedido}>{rowData.pedido}</Text>
+                    </View>
+                    <Text numberOfLines={3} style={styles.textDecricao}>{rowData.descricao}</Text>
                     <View style={styles.viewTag}>{this._renderTag(rowData.tag)}</View>
-                </View>
+                </TouchableOpacity>
             );
        }
     }
 
     render(){
-
         return(
-            <View style={{ paddingBottom: 205 }}>
+            <View style={styles.viewListView}>               
                 <ListView 
                     dataSource={this.dataSource}
                     renderRow={(rowData) => this._renderRow(rowData)}
@@ -72,35 +92,50 @@ class ListViewTag extends Component {
 }
 
 const styles = StyleSheet.create({
-    viewConteudo: {        
-        flex: 1,   
-        width: 348,     
+    viewListView: {
+        width: '98%',//Dimensions.get('window').width, 
+        height: '78.5%',
+    },
+    viewConteudo: {   
+        width: '100%',    
         backgroundColor: 'white' , 
-        borderRadius: 10 ,
-        marginTop: 3, 
-        elevation: 2,
+        borderRadius: 15 ,
+        marginTop: 5,
+        paddingBottom: 10, 
+        elevation: 4,
         paddingBottom: 5,
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     },
     textPedido:{
-        margin: 5,
         fontWeight: 'bold',
         fontSize: 18         
     },
     textDecricao:{
-        marginHorizontal: 8,
-        fontSize: 16         
+        paddingHorizontal: 10,
+        fontSize: 16,
+        marginBottom: 10,     
     },
     textTag: { 
         backgroundColor: '#87CEFA', 
         borderRadius: 60, 
         padding:5, 
         margin:2,
-        fontSize: 15
+        fontSize: 15,
     },
     viewTag: {
         flexDirection: 'row',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        paddingHorizontal: 10,        
+        marginBottom: 10
+    },
+    viewNroPedido: {
+        backgroundColor: '#87CEFA', 
+        borderBottomRightRadius: 15,
+        borderTopLeftRadius: 15,
+        width: 63, 
+        padding: 5,
+        marginBottom: 10
     }
 })
+
 export default ListViewTag;
